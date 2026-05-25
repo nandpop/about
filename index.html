@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anand Gangadharan — Builder-PM</title>
+<meta name="description" content="Anand Gangadharan — Builder-PM. Product Manager at American Express. Founder of VowTales & Vignette AI Studio." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg-2: #111114;
+    --ink: #f5f4ef;
+    --muted: #8a8a93;
+    --line: rgba(245,244,239,0.08);
+    --accent: #c4634a;
+    --accent-2: #e8b13a;
+    --accent-3: #7b8b6f;
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--accent); color: #000; }
+
+  .cursor-blob {
+    position: fixed;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,99,74,0.28), rgba(232,177,58,0.18) 40%, transparent 70%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: blur(60px);
+    will-change: transform;
+  }
+  .grain {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(rgba(245,244,239,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,244,239,0.025) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 18px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px;
+    background: rgba(17,17,20,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  nav a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: all 0.25s;
+  }
+  nav a:hover { color: var(--ink); background: rgba(255,255,255,0.04); }
+  nav a.cta { background: var(--ink); color: #000; }
+  nav a.cta:hover { background: var(--accent-2); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 120px 32px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: rgba(232,177,58,0.08);
+    border: 1px solid rgba(232,177,58,0.35);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-2);
+    margin-bottom: 28px;
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 10px var(--accent-2);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(52px, 9.5vw, 140px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .hero h1 .italic { font-style: italic; color: var(--accent); }
+  .hero h1 .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: heroIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero h1 .word:nth-child(1){animation-delay:.1s}
+  .hero h1 .word:nth-child(2){animation-delay:.2s}
+  .hero h1 .word:nth-child(3){animation-delay:.3s}
+  .hero h1 .word:nth-child(4){animation-delay:.4s}
+  .hero h1 .word:nth-child(5){animation-delay:.5s}
+  .hero h1 .word:nth-child(6){animation-delay:.6s}
+  .hero h1 .word:nth-child(7){animation-delay:.7s}
+  @keyframes heroIn { to { opacity: 1; transform: translateY(0); } }
+
+  .hero .sub {
+    max-width: 680px;
+    font-size: clamp(17px, 1.4vw, 21px);
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: heroIn 1s ease 0.8s forwards;
+  }
+  .hero .sub strong { color: var(--ink); font-weight: 500; }
+
+  .hero .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: heroIn 1s ease 1s forwards;
+  }
+  .hero .meta-row span::before { content: '◆'; color: var(--accent); margin-right: 8px; }
+
+  .hero-ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: heroIn 1s ease 1.1s forwards;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid var(--line);
+  }
+  .btn.primary { background: var(--ink); color: #000; border-color: var(--ink); }
+  .btn.primary:hover { background: var(--accent-2); border-color: var(--accent-2); transform: translateY(-2px); }
+  .btn.ghost { color: var(--ink); }
+  .btn.ghost:hover { background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+  .btn .arr { transition: transform 0.25s; }
+  .btn:hover .arr { transform: translate(3px, -3px); }
+
+  .marquee {
+    margin-top: 80px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+    background: rgba(255,255,255,0.01);
+  }
+  .marquee-track {
+    display: flex;
+    gap: 64px;
+    animation: marquee 50s linear infinite;
+    white-space: nowrap;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--muted);
+  }
+  .marquee-track span { display: inline-flex; align-items: center; gap: 64px; }
+  .marquee-track .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  section { position: relative; z-index: 2; scroll-margin-top: 90px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+  .section-pad { padding: 120px 0; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+  }
+  .section-num { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+  .section-title em { color: var(--muted); font-style: italic; }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 64px;
+  }
+  @media (max-width: 800px) { .about-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .about-copy p {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2vw, 26px);
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 22px;
+  }
+  .about-copy p .hl {
+    background: linear-gradient(180deg, transparent 60%, rgba(196,99,74,0.4) 60%);
+    padding: 0 4px;
+  }
+  .about-copy p em { color: var(--muted); }
+  .about-side .stat { padding: 22px 0; border-top: 1px solid var(--line); }
+  .about-side .stat:last-child { border-bottom: 1px solid var(--line); }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 44px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num small { font-size: 18px; color: var(--muted); }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* IMPACT BAR */
+  .impact-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+  }
+  @media (max-width: 700px) { .impact-bar { grid-template-columns: repeat(2, 1fr); } }
+  .impact-cell {
+    padding: 36px 24px;
+    border-right: 1px solid var(--line);
+    transition: background 0.3s;
+  }
+  .impact-cell:last-child { border-right: none; }
+  @media (max-width: 700px) {
+    .impact-cell:nth-child(2n) { border-right: none; }
+    .impact-cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  }
+  .impact-cell:hover { background: rgba(196,99,74,0.05); }
+  .impact-num {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .impact-num .accent { color: var(--accent); }
+  .impact-label {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* FLAGSHIP CARDS */
+  .flagships {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .flagships { grid-template-columns: 1fr; } }
+  .flag {
+    border-radius: 24px;
+    background: linear-gradient(160deg, #1a1410 0%, #0f0d0c 100%);
+    border: 1px solid var(--line);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s, border-color 0.4s;
+  }
+  .flag:hover { transform: translateY(-4px); border-color: rgba(196,99,74,0.35); }
+  .flag.indigo { background: linear-gradient(160deg, #0f1020 0%, #0a0a14 100%); }
+  .flag::before {
+    content: '';
+    position: absolute;
+    top: -150px; right: -150px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(196,99,74,0.22), transparent 70%);
+    filter: blur(60px);
+  }
+  .flag.indigo::before {
+    background: radial-gradient(circle, rgba(123,139,111,0.22), transparent 70%);
+  }
+  .flag-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .flag-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    background: rgba(196,99,74,0.12);
+    border: 1px solid rgba(196,99,74,0.35);
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 1px;
+  }
+  .flag.indigo .flag-tag {
+    color: var(--accent-3);
+    background: rgba(123,139,111,0.12);
+    border-color: rgba(123,139,111,0.35);
+  }
+  .flag-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .flag h3 {
+    font-family: var(--serif);
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    font-weight: 400;
+    position: relative;
+  }
+  .flag .tag-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .flag .role-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .flag ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    position: relative;
+  }
+  .flag ul li {
+    padding: 10px 0 10px 22px;
+    position: relative;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+  }
+  .flag ul li:first-child { border-top: none; }
+  .flag ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .flag.indigo ul li::before { color: var(--accent-3); }
+  .flag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--accent);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .flag.indigo .flag-link { color: var(--accent-3); border-color: var(--accent-3); }
+  .flag-link:hover { gap: 14px; }
+
+  /* EXPERIENCE */
+  .exp {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    padding: 36px 0;
+    border-top: 1px solid var(--line);
+  }
+  .exp:last-child { border-bottom: 1px solid var(--line); }
+  @media (max-width: 800px) { .exp { grid-template-columns: 1fr; gap: 16px; } }
+  .exp-side .exp-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .exp-side .exp-co {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.1;
+  }
+  .exp-side .exp-loc {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .exp-body .exp-role {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .exp-body .exp-role .arrow { color: var(--muted); margin: 0 8px; font-size: 18px; }
+  .exp-body ul { list-style: none; padding: 0; margin: 0; }
+  .exp-body ul li {
+    padding: 10px 0 10px 24px;
+    position: relative;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.55;
+    border-top: 1px solid var(--line);
+  }
+  .exp-body ul li:first-child { border-top: none; }
+  .exp-body ul li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 18px;
+    width: 12px; height: 1px;
+    background: var(--accent);
+  }
+  .exp-body ul li b { color: var(--accent-2); font-weight: 600; }
+
+  /* PRINCIPLES */
+  .principles {
+    background: var(--bg-2);
+    padding: 120px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .principle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  @media (max-width: 700px) { .principle-grid { grid-template-columns: 1fr; } }
+  .principle {
+    padding: 40px 36px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s;
+  }
+  .principle:hover { background: rgba(196,99,74,0.04); }
+  .principle .n { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 16px; }
+  .principle h3 {
+    font-family: var(--serif);
+    font-size: 30px;
+    line-height: 1.1;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .principle p { color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  /* STACK */
+  .stack-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 40px; }
+  .stack-row:last-child { margin-bottom: 0; }
+  .stack-label {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .chip {
+    padding: 8px 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .chip:hover {
+    background: var(--ink);
+    color: #000;
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .chip.hot {
+    background: rgba(196,99,74,0.12);
+    border-color: rgba(196,99,74,0.35);
+    color: var(--accent);
+  }
+  .chip.hot:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+  /* SPEAKING */
+  .speak-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 800px) { .speak-grid { grid-template-columns: 1fr; } }
+  .speak-card {
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.02);
+    transition: all 0.3s;
+  }
+  .speak-card:hover {
+    background: rgba(196,99,74,0.05);
+    border-color: rgba(196,99,74,0.35);
+    transform: translateY(-3px);
+  }
+  .speak-card .where {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+  }
+  .speak-card h4 {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .speak-card p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+  /* CONTACT */
+  .contact {
+    padding: 160px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact::before {
+    content: '';
+    position: absolute;
+    bottom: -300px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(ellipse, rgba(196,99,74,0.22), transparent 70%);
+    filter: blur(60px);
+    z-index: -1;
+  }
+  .contact .kicker { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-bottom: 24px; }
+  .contact h2 {
+    font-family: var(--serif);
+    font-size: clamp(56px, 12vw, 160px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+  }
+  .contact h2 em { color: var(--accent); font-style: italic; }
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--serif);
+    font-size: clamp(22px, 2.6vw, 32px);
+    padding: 16px 32px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #000;
+    transition: all 0.3s;
+    word-break: break-all;
+  }
+  .contact-email:hover { background: var(--accent-2); transform: translateY(-3px) scale(1.02); }
+  .contact-links {
+    margin-top: 48px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .contact-links a { position: relative; padding-bottom: 2px; transition: color 0.2s; }
+  .contact-links a::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .contact-links a:hover { color: var(--ink); }
+  .contact-links a:hover::after { transform: scaleX(1); }
+
+  footer {
+    padding: 32px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    nav { gap: 0; padding: 4px; }
+    nav a { padding: 8px 10px; font-size: 12px; }
+    nav a:not(.cta):nth-child(n+4) { display: none; }
+    .hero { padding: 100px 20px 60px; }
+    .container { padding: 0 20px; }
+    .section-pad { padding: 80px 0; }
+    .flag { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-blob" id="blob"></div>
+<div class="grain"></div>
+
+<nav>
+  <a href="#flagships">Building</a>
+  <a href="#experience">Experience</a>
+  <a href="#principles">Principles</a>
+  <a href="#speaking">Speaking</a>
+  <a href="#contact" class="cta">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      Owning $4.5M+ at Amex · Shipping two B2C products on the side
+    </div>
+
+    <h1>
+      <span class="word">Builder-</span><span class="word italic">PM.</span>
+      <br/>
+      <span class="word">Prototypes</span>
+      <span class="word">over</span>
+      <span class="word italic">PRDs.</span>
+    </h1>
+
+    <p class="sub">
+      I'm <strong>Anand Gangadharan</strong> — a product manager with 5+ years shipping 0-to-1 products end-to-end. I write the SQL, pull the funnel, run the A/B test, build the prototype with <strong>Claude Code & Antigravity</strong>, and own the number. Currently at <strong>American Express</strong>, building two products as a solo founder on the side.
+    </p>
+
+    <div class="meta-row">
+      <span>PM @ American Express</span>
+      <span>Founder · VowTales &amp; Vignette AI Studio</span>
+      <span>Gurugram, India</span>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#flagships" class="btn primary">See what I'm building <span class="arr">↗</span></a>
+      <a href="#contact" class="btn ghost">Get in touch <span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>
+        0 → 1 <span class="dot"></span>
+        GenAI · RAG · Agentic Workflows <span class="dot"></span>
+        Claude Code · Antigravity <span class="dot"></span>
+        Paid Ads · Funnel Iteration <span class="dot"></span>
+        SQL · Python · BigQuery <span class="dot"></span>
+        Real users over roadmaps <span class="dot"></span>
+        0 → 1 <span class="dot"></span>
+        GenAI · RAG · Agentic Workflows <span class="dot"></span>
+        Claude Code · Antigravity <span class="dot"></span>
+        Paid Ads · Funnel Iteration <span class="dot"></span>
+        SQL · Python · BigQuery <span class="dot"></span>
+        Real users over roadmaps <span class="dot"></span>
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT BAR -->
+<section class="impact-bar">
+  <div class="impact-cell">
+    <div class="impact-num"><span class="accent">$4.5M+</span></div>
+    <div class="impact-label">PTI generated across 9+ risk products shipped at Amex</div>
+  </div>
+  <div class="impact-cell">
+    <div class="impact-num"><span class="accent">$1.4M</span></div>
+    <div class="impact-label">Operational savings in year 1 from QTrac ML anomaly platform</div>
+  </div>
+  <div class="impact-cell">
+    <div class="impact-num"><span class="accent">87.5%</span></div>
+    <div class="impact-label">Reduction in payments data refresh latency · 16h → 2h</div>
+  </div>
+  <div class="impact-cell">
+    <div class="impact-num"><span class="accent">600+</span></div>
+    <div class="impact-label">Learners mentored on GenAI, GCP, and prompt engineering</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-pad" id="about">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">01 / About</span>
+      <h2 class="section-title">The <em>shape</em> of how I work.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p>
+          Most PMs <em>write specs</em>. I <span class="hl">write prompts, write SQL, write code, and write specs</span> — in that order. By the time anyone sees a doc from me, the core flow is already a clickable prototype and a pulled funnel.
+        </p>
+        <p>
+          At Amex I own a <em>$4.5M+ data product line</em> — anomaly detection, RAG-powered quality checks, payments data infrastructure. On weekends I run two B2C products solo: <span class="hl">VowTales</span> for AI wedding invitations and <span class="hl">Vignette AI Studio</span> for AI interior design.
+        </p>
+        <p>
+          The shape: <em>ruthless prioritization, prototypes that kill weak ideas fast, and decisions driven by data over rituals.</em> I'm comfortable shoulder-to-shoulder with engineers, in front of executives, and on Instagram DMs with users.
+        </p>
+      </div>
+
+      <div class="about-side reveal">
+        <div class="stat">
+          <div class="stat-num">5<small>+ yrs</small></div>
+          <div class="stat-label">Shipping 0→1 products</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Person cross-functional squad owned</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100K<small>s</small></div>
+          <div class="stat-label">Organic IG views from solo product launches</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">9.06<small>/10</small></div>
+          <div class="stat-label">CGPA · CSE @ VIT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGSHIPS -->
+<section class="section-pad" id="flagships" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">02 / Building right now</span>
+      <h2 class="section-title">Two products, <em>shipped solo.</em></h2>
+    </div>
+
+    <div class="flagships">
+      <a href="https://vowtales.studio" target="_blank" rel="noopener" class="flag reveal">
+        <div class="flag-head">
+          <span class="flag-tag">● LIVE · FOUNDER</span>
+          <span class="flag-date">Apr 2026 → now</span>
+        </div>
+        <h3>VowTales</h3>
+        <p class="tag-line">AI-personalized wedding invitations &amp; live websites.</p>
+        <div class="role-line">Founder · NRI Market · Paid + Organic</div>
+        <ul>
+          <li>Shipped domain, landing page, lead-magnet funnel, Airtable order flow — under 2 weeks.</li>
+          <li>Running Meta paid ad experiments, iterating creative + targeting weekly.</li>
+          <li>Tuning conversion based on DM inquiries &amp; funnel data.</li>
+        </ul>
+        <span class="flag-link">vowtales.studio ↗</span>
+      </a>
+
+      <a href="https://vignettestudio.framer.website" target="_blank" rel="noopener" class="flag indigo reveal">
+        <div class="flag-head">
+          <span class="flag-tag">● LIVE · CO-FOUNDER</span>
+          <span class="flag-date">Dec 2025 → now</span>
+        </div>
+        <h3>Vignette AI Studio</h3>
+        <p class="tag-line">AI interior visualization for homeowners &amp; designers.</p>
+        <div class="role-line">Product Lead · Roadmap · MVP · GTM</div>
+        <ul>
+          <li>Defined the roadmap and shipped the MVP solo.</li>
+          <li>Ran Instagram-led growth experiments — hundreds of thousands of organic views.</li>
+          <li>Iterated the funnel based on user feedback &amp; conversion data.</li>
+        </ul>
+        <span class="flag-link">vignettestudio.framer.website ↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section-pad" id="experience" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">03 / Experience</span>
+      <h2 class="section-title">5 years at <em>American Express.</em></h2>
+    </div>
+
+    <div class="reveal">
+      <div class="exp">
+        <div class="exp-side">
+          <div class="exp-date">Mar 2025 — Present</div>
+          <div class="exp-co">American Express</div>
+          <div class="exp-loc">Gurugram, India</div>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Product Manager <span class="arrow">·</span> Data Products &amp; Governance</h3>
+          <ul>
+            <li><b>Protected customer trust &amp; revenue</b> by leading the QTrac anomaly detection platform — caught systemic issues like erroneous Resy credit over-bonusing before they reached customers.</li>
+            <li><b>Shipped a 0-to-1 ML anomaly detection product</b> end-to-end with engineering and Decision Science — delivered <b>$1.4M in operational savings</b> in year 1.</li>
+            <li>Led a <b>generative AI workflow leveraging RAG</b> on business metadata to auto-generate context-aware quality checks — turned ambiguous compliance into a shippable product.</li>
+            <li>Owned product execution for an <b>8-person cross-functional squad</b> spanning engineering, UX, risk, and compliance.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp">
+        <div class="exp-side">
+          <div class="exp-date">Feb 2023 — Feb 2025</div>
+          <div class="exp-co">American Express</div>
+          <div class="exp-loc">Gurugram, India</div>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Senior Product Analyst <span class="arrow">·</span> Data Products &amp; Risk Strategy</h3>
+          <ul>
+            <li><b>Cut real-time payments data latency 16h → 2h (87.5%)</b> by leading the GCP redesign of a core payments data model — directly reducing fraud exposure for cardmembers.</li>
+            <li><b>Shipped 9+ risk products</b> from concept to launch, generating <b>$4.5M+ in PTI</b> and establishing a centralized feature store adopted across Consumer Risk &amp; Business Strategy.</li>
+            <li>Ran beta programs &amp; stakeholder comms across Risk, Compliance, and Tech — accelerated adoption through steering committees and clear KPI reporting.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp">
+        <div class="exp-side">
+          <div class="exp-date">Aug 2021 — Jan 2023</div>
+          <div class="exp-co">American Express</div>
+          <div class="exp-loc">Gurugram, India</div>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Product Analyst <span class="arrow">·</span> Data Products &amp; Risk Strategy</h3>
+          <ul>
+            <li>Built <b>SLA dashboards &amp; KPI reporting</b> that gave executive leadership real-time visibility into system availability (<b>90%+</b>) — measuring product performance against agreed business outcomes.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp">
+        <div class="exp-side">
+          <div class="exp-date">Jan 2021 — Jul 2021</div>
+          <div class="exp-co">American Express</div>
+          <div class="exp-loc">Gurugram, India</div>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Analyst Intern <span class="arrow">·</span> Credit &amp; Fraud Risk</h3>
+          <ul>
+            <li>Built <b>release automation pipelines</b> that reduced human error and saved <b>16 hours/week</b> from product deployment cycles.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="principles" id="principles">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">04 / Operating system</span>
+      <h2 class="section-title">How I <em>think</em>.</h2>
+    </div>
+
+    <div class="principle-grid reveal">
+      <div class="principle">
+        <div class="n">P / 01</div>
+        <h3>Prototypes over PRDs.</h3>
+        <p>A working prototype kills more bad ideas in an afternoon than three weeks of docs ever will. I'd rather show a janky build than defend a polished spec.</p>
+      </div>
+      <div class="principle">
+        <div class="n">P / 02</div>
+        <h3>Real users over roadmaps.</h3>
+        <p>Roadmaps are stories we tell stakeholders. Users are the truth. I'd rather be on a WhatsApp call with one real user than in a quarterly planning session with twelve.</p>
+      </div>
+      <div class="principle">
+        <div class="n">P / 03</div>
+        <h3>Data over rituals.</h3>
+        <p>Sprint ceremonies don't move metrics. A funnel pulled at 11pm does. Decisions get made on evidence; rituals only run when they earn their keep.</p>
+      </div>
+      <div class="principle">
+        <div class="n">P / 04</div>
+        <h3>The model is the feature.</h3>
+        <p>For AI products, prompt design, model choice, and the eval loop <em>are</em> the product. Treating them as "implementation details" is how AI demos die in production.</p>
+      </div>
+      <div class="principle">
+        <div class="n">P / 05</div>
+        <h3>Own the number.</h3>
+        <p>If I can't tell you the metric, the baseline, and the move I'm making — I shouldn't be the PM on it. Accountability beats authority every single time.</p>
+      </div>
+      <div class="principle">
+        <div class="n">P / 06</div>
+        <h3>Kill weak ideas fast.</h3>
+        <p>The cost of a bad idea isn't the build — it's the months you spend defending it. Prioritize ruthlessly. Sunk-cost reasoning is the most expensive bias in product.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="section-pad" id="stack">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">05 / Stack</span>
+      <h2 class="section-title">What I <em>reach for</em>.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="stack-row">
+        <div class="stack-label">AI &amp; Data Platform</div>
+        <span class="chip hot">GenAI</span>
+        <span class="chip hot">RAG</span>
+        <span class="chip hot">Agentic Workflows</span>
+        <span class="chip">LangChain</span>
+        <span class="chip">Isolation Forest</span>
+        <span class="chip">Holt-Winters</span>
+        <span class="chip">Feature Stores</span>
+        <span class="chip">Data Mesh</span>
+        <span class="chip">GCP</span>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Building &amp; Prototyping</div>
+        <span class="chip hot">Claude Code</span>
+        <span class="chip hot">Antigravity</span>
+        <span class="chip">Framer</span>
+        <span class="chip">Stitch</span>
+        <span class="chip">API Integrations</span>
+        <span class="chip">Prompt Engineering</span>
+        <span class="chip">TDD</span>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Data &amp; Engineering</div>
+        <span class="chip">Python</span>
+        <span class="chip">SQL</span>
+        <span class="chip">BigQuery</span>
+        <span class="chip">Airflow</span>
+        <span class="chip">Analytics</span>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Product &amp; Growth</div>
+        <span class="chip">Roadmap Planning</span>
+        <span class="chip">Sprint &amp; Backlog</span>
+        <span class="chip">Stakeholder Alignment</span>
+        <span class="chip">Meta Paid Ads</span>
+        <span class="chip">Instagram Organic</span>
+        <span class="chip">Landing Page Opt</span>
+        <span class="chip">Lead-Magnet Design</span>
+        <span class="chip">Payment-First Funnels</span>
+      </div>
+      <div class="stack-row">
+        <div class="stack-label">Certifications</div>
+        <span class="chip">GCP Professional Data Engineer</span>
+        <span class="chip">Harvard Leadership Edge</span>
+        <span class="chip">LLM App Dev · LangChain</span>
+        <span class="chip">IBM Data Science Pro</span>
+        <span class="chip">Cloudera Big Data SQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEAKING -->
+<section class="section-pad" id="speaking" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-num">06 / Speaking &amp; teaching</span>
+      <h2 class="section-title">On stage &amp; <em>in classrooms.</em></h2>
+    </div>
+
+    <div class="speak-grid reveal">
+      <div class="speak-card">
+        <div class="where">Google Developers Group</div>
+        <h4>Google I/O Extended<br/>+ DevFest</h4>
+        <p>Technical sessions on AI/ML and Product Management at I/O Extended 2024 &amp; 2025 and DevFest 2024 — 300+ industry pros &amp; students per session.</p>
+      </div>
+      <div class="speak-card">
+        <div class="where">Guest Lecturer</div>
+        <h4>IIM Lucknow &amp; IIT Guwahati</h4>
+        <p>"AI for Product Management" — bridging LLM capabilities and enterprise execution for emerging product leaders.</p>
+      </div>
+      <div class="speak-card">
+        <div class="where">Coding Ninjas</div>
+        <h4>Cloud &amp; AI Mentor</h4>
+        <p>10+ hands-on sessions for 600+ learners on GCP architecture, prompt engineering, and GenAI automation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="kicker">07 / Let's build something</div>
+  <h2>Got an <em>idea</em>?<br/>Let's <em>ship it</em>.</h2>
+  <a href="mailto:anand.gdharan13@gmail.com" class="contact-email">
+    anand.gdharan13@gmail.com <span>↗</span>
+  </a>
+  <div class="contact-links">
+    <a href="https://linkedin.com/in/anand-gangadharan" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://vowtales.studio" target="_blank" rel="noopener">VowTales</a>
+    <a href="https://vignettestudio.framer.website" target="_blank" rel="noopener">Vignette AI Studio</a>
+    <a href="tel:+919968962452">+91 99689 62452</a>
+  </div>
+</section>
+
+<footer>
+  <div>© <span id="year"></span> Anand Gangadharan · Builder-PM</div>
+  <div>Designed &amp; shipped solo. With Claude Code.</div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Cursor blob
+  const blob = document.getElementById('blob');
+  let mx = window.innerWidth/2, my = window.innerHeight/2, bx = mx, by = my;
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  (function loop(){
+    bx += (mx-bx)*0.08; by += (my-by)*0.08;
+    blob.style.transform = `translate(${bx}px, ${by}px) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  })();
+
+  // Reveal
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
