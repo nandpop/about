@@ -222,6 +222,8 @@
     animation: heroIn 1s ease 1s forwards;
   }
   .hero .meta-row span::before { content: '◆'; color: var(--accent); margin-right: 8px; }
+  .meta-link { color: var(--ink); border-bottom: 1px solid rgba(245,244,239,0.3); transition: border-color 0.2s, color 0.2s; }
+  .meta-link:hover { color: var(--accent-2); border-color: var(--accent-2); }
 
   .hero-ctas {
     display: flex;
@@ -770,7 +772,7 @@
 
     <div class="meta-row">
       <span>Product Manager @ American Express</span>
-      <span>Founder · VowTales &amp; Vignette AI Studio</span>
+      <span>Founder · <a href="https://vowtales.studio" target="_blank" rel="noopener" class="meta-link">VowTales</a> &amp; <a href="https://vignettestudio.framer.website" target="_blank" rel="noopener" class="meta-link">Vignette AI Studio</a></span>
       <span>Bengaluru, India</span>
     </div>
 
